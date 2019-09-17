@@ -96,7 +96,21 @@
   
   
   
-   
+  在一个`span`标签中存在很多字，如果给span加一个border会如何？
+  
+  
+  
+  ![屏幕快照 2019-09-17 下午8.39.49](/Users/949n9/Markdown/MarkPicture/屏幕快照 2019-09-17 下午8.39.49.png)
+  
+   每一行文字都会加上border，换行的时候不会有左右边框，只有开始和结束的时候会有左右边框。
+  
+  
+  
+  
+  
+  
+  
+  
   
   2 tcp的三次握手
   3 懒加载的节流和防抖，代码实现，并说明原理去区别还有使用场景
@@ -111,7 +125,6 @@
   12 前端性能如何优化列举几种吧
   13 你有canvas的经验，你可以大概说一下如何实现一个普通canvas的过程吗？可以写一下吗？
   14 还有啥问题问我吗？
-  
 
 大数相加问题
 
@@ -161,7 +174,6 @@ https://www.nowcoder.com/discuss/177482
 
 https://juejin.im/post/5abb5b01f265da237f1e5a92
 
-
 事件循环机制
 https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/7
 https://juejin.im/post/59e85eebf265da430d571f89
@@ -171,3 +183,77 @@ https://juejin.im/post/59e85eebf265da430d571f89
 
 脏检查
 https://www.jianshu.com/p/72db2f527068
+
+
+
+
+
+
+
+### for循环里面加了异步函数的问题
+
+```js
+for( var i = 0; i < 5; i++){
+    (function() { 
+        setTimeout(()=>{
+            console.log(i) 
+        },1000*i) 
+    })(i)  
+}
+//而console.log(i)中的i指向的是全局的i， var声明的变量是全局变量，所以在同步函数结束后，全局只有一个i = 5，产生闭包会去函数体外面取值。
+//所以会打印出5个5
+
+for( var i = 0; i < 5; i++){
+    (function(i) { 
+        setTimeout(()=>{
+            console.log(i)  
+        },1000*i)  
+    })(i)  
+}
+
+//0 1 2 3 4 
+//不同的是给function里面传值了，所以function(0）,function(1）,function(2）,function(3）...会被送到异步队列，
+//由于不产生闭包，i 已经有值了，不用去全局取，所以会输入0 1 2 3 4
+
+for( let i = 0; i < 5; i++){
+    (function() {  
+        setTimeout(()=>{
+            console.log(i) 
+        },1000*i)  
+    })(i)  
+}
+//0 1 2 3 4
+//let 是块级作用域，每次for循环运行一次都会产生一个块级作用域，所以可以看成有5个i 
+```
+
+
+
+
+
+### 百度面试题
+
+in 的应用：
+
+https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/in
+
+```js
+    if(!("a" in window)){
+        var a = 1
+    }
+    alert(a)// undefined
+    
+```
+
+```
+如果你只是将一个属性的值赋值为undefined，而没有删除它，则 in 运算仍然会返回true。
+```
+
+
+
+
+
+
+
+### 阿里面试：
+
+ 怎么判断两个对象相等？
