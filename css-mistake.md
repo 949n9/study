@@ -8,7 +8,7 @@
 
 当有两个盒子，大盒子套小盒子，然后同时给大盒子设值`margin-top:100px`小盒子设置`margin-top10px`浏览器出现的效果去却是如下图
 
-![屏幕快照 2019-09-11 下午7.32.55](/Users/949n9/Markdown/MarkPicture/屏幕快照 2019-09-11 下午7.32.55.png)
+![](https://tva1.sinaimg.cn/large/006y8mN6ly1g72xlccx7uj30gm0gy0ss.jpg)
 
 父子元素塌陷就是，子元素的`margin-top:19px`不生效了。
 解决方法有三种：
@@ -79,7 +79,7 @@ display的值为table-cell, table-caption, inline-block中的任何一个。
 ```
 
 - 效果图如下：
-- <img src="/Users/949n9/Markdown/MarkPicture/image-20190917213245096.png" alt="image-20190917213245096" style="zoom: 33%;" />
+- <img src="https://tva1.sinaimg.cn/large/006y8mN6ly1g72xmfp80qj30gs0b8mx8.jpg" style="zoom:33%;" />
 - 分析：
 
 > ##### 根据BFC布局规则 第3条：
@@ -106,9 +106,7 @@ BFC的区域不会与float box重叠。
 
 - 新的效果图如下：
 
-  
-
-  <img src="/Users/949n9/Markdown/MarkPicture/image-20190917213510542.png" alt="image-20190917213510542" style="zoom: 33%;" />
+<img src="https://tva1.sinaimg.cn/large/006y8mN6ly1g72xnemrxvj30gm0b2weg.jpg" style="zoom:33%;" />
 
 - ###### 清除内部浮动
 
@@ -129,7 +127,7 @@ BFC的区域不会与float box重叠。
 
   
 
-  <img src="/Users/949n9/Markdown/MarkPicture/image-20190917213637915.png" alt="image-20190917213637915" style="zoom:33%;" />
+  <img src="https://tva1.sinaimg.cn/large/006y8mN6ly1g72xp3b0z9j30ho06kq33.jpg" alt="image-20190917213637915" style="zoom:33%;" />
 
 - 修改：
 
@@ -146,7 +144,7 @@ BFC的区域不会与float box重叠。
 
   
 
-  <img src="/Users/949n9/Markdown/MarkPicture/image-20190917213735326.png" alt="image-20190917213735326" style="zoom:33%;" />
+  <img src="https://tva1.sinaimg.cn/large/006y8mN6ly1g72xpok22sj30h806qdfz.jpg" alt="image-20190917213735326" style="zoom:33%;" />
 
   
 

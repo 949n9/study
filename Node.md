@@ -292,7 +292,7 @@ path.resolve('wwwroot', 'static_files/png/', '../gif/image.gif');
 | name | string |
 | ext |string|
 
-![ea0b7df9d50d4eb31bb80fa5d157515a](Node.resources/158A1B8A-7FE2-467B-91E6-5A199BD364E8.png)
+![ea0b7df9d50d4eb31bb80fa5d157515a](https://tva1.sinaimg.cn/large/006y8mN6ly1g72xq3q6jkj30fu084q35.jpg)
 ```js
 path.parse('/home/user/dir/file.txt');
 // 返回:
@@ -312,7 +312,7 @@ WHATWG 的 API 与遗留的 API 的区别如下。 在下图中, `http://user:pa
 
 WHATWG 的 origin 属性包括 protocol 和 host，但不包括 username 或 password。
 
-![f6e85942b1f2906bbb25839b37c6f3e8](Node.resources/536AFD07-03B8-476F-834A-F13B602EE809.png)
+![f6e85942b1f2906bbb25839b37c6f3e8](https://tva1.sinaimg.cn/large/006y8mN6ly1g72xpxm9nyj316c0mo76e.jpg)
 ### req.url
 ### url.parse
 

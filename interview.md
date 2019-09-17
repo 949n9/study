@@ -100,7 +100,7 @@
   
   
   
-  ![屏幕快照 2019-09-17 下午8.39.49](/Users/949n9/Markdown/MarkPicture/屏幕快照 2019-09-17 下午8.39.49.png)
+  ![屏幕快照 2019-09-17 下午8.39.49](https://tva1.sinaimg.cn/large/006y8mN6ly1g72xsvfvwjj31ry0ksahq.jpg)
   
    每一行文字都会加上border，换行的时候不会有左右边框，只有开始和结束的时候会有左右边框。
   

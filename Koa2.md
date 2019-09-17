@@ -221,7 +221,7 @@ app.listen(3030)
 ```
 
 然后pubilc下面有个入口文件index.html,编写需要显示的html，也可以引入相应的样式，js。目录结构如下
-![image-20190822204631957](/Users/949n9/Library/Application Support/typora-user-images/image-20190822204631957.png)
+![image-20190822204631957](https://tva1.sinaimg.cn/large/006y8mN6ly1g72xqt7u34j30ck0660sx.jpg)
 
 以下是相关页面代码，样式和js省略...
 
@@ -325,7 +325,7 @@ router.all('/editor/controller', ueditor(['public', {
 ```
 * 配置config文件
 
-  ![image-20190829181531492](/Users/949n9/Library/Application Support/typora-user-images/image-20190829181531492.png)
+  ![image-20190829181531492](https://tva1.sinaimg.cn/large/006y8mN6ly1g72xqygw0cj30mi03qgls.jpg)
 由于本项目的接口是在admin下的，所以这里应该配置`"/admin/editor/controller"`
 
 *在html文件创建富文本编辑器
