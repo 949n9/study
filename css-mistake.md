@@ -144,7 +144,7 @@ BFC的区域不会与float box重叠。
 
   
 
-  <img src="https://tva1.sinaimg.cn/large/006y8mN6ly1g72xpok22sj30h806qdfz.jpg" alt="image-20190917213735326" style="zoom:33%;" />
+  <img src="https://tva1.sinaimg.cn/large/006y8mN6ly1g72xpok22sj30h806qdfz.jpg" alt="image-20190917213735326" />
 
   
 

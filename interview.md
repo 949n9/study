@@ -1,6 +1,4 @@
-# interview
-
-### cookie, sessionstorage, localstorage, session是什么？
+## cookie, sessionstorage, localstorage, session是什么？
 
 * Session
 
@@ -190,7 +188,7 @@ https://www.jianshu.com/p/72db2f527068
 
 
 
-### for循环里面加了异步函数的问题
+## for循环里面加了异步函数的问题
 
 ```js
 for( var i = 0; i < 5; i++){
@@ -230,7 +228,112 @@ for( let i = 0; i < 5; i++){
 
 
 
-### 百度面试题
+## 什么是深克隆，浅克隆？实现深克隆（拷贝）
+
+### 浅拷贝
+
+![image-20190918162016245](https://tva1.sinaimg.cn/large/006y8mN6ly1g73qu98e9gj30u40d641z.jpg)
+
+
+
+> 创建一个新对象，这个对象有着原始对象属性值的一份精确拷贝。如果属性是基本类型，拷贝的就是基本类型的值，如果属性是引用类型，拷贝的就是内存地址 ，所以如果其中一个对象改变了这个地址，就会影响到另一个对象。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 深拷贝
+
+网上比较流行的一个方案是：
+
+```js
+JSON.parse(JSON.stringify(object))
+```
+
+原理是利用JSON.parse把对象转换成JSON格式，然后再通过JSON.stringify把JSON转化成对象。
+
+如果是安全的JSON格式的值，就不会出现问题，如果是不安全的JSON值，这个方法就会出现问题。
+
+例如出现如下情况的：
+
+* 对象中含有undefined,function,symbol
+* 包循环引用（对象之间的互相引用）
+* 其他类型，function，正则
+
+如果出现上述情况的，都不可以用这个方法去拷贝。
+
+```js
+function clone(target, map = new weakMap()) {
+    if (typeof target === 'object') {
+        let cloneTarget = Array.isArray(target) ? [] : {};
+        if (map.get(target)) {
+            return map.get(target);
+        }
+        map.set(target, cloneTarget);
+        for (const key in target) {
+            cloneTarget[key] = clone(target[key], map);
+        }
+        return cloneTarget;
+    } else {
+        return target;
+   
+};
+  //解决循环引用问题
+  //但是对于symbol类型等其他类型还是不能使用
+  //后续可以参考下文链接，或者使用lodash的深克隆
+
+
+```
+
+解决循环引用问题，我们可以额外开辟一个存储空间，来存储当前对象和拷贝对象的对应关系，当需要拷贝当前对象时，先去存储空间中找，有没有拷贝过这个对象，如果有的话直接返回，如果没有的话继续拷贝，这样就巧妙化解的循环引用的问题。
+
+这个存储空间，需要可以存储`key-value`形式的数据，且`key`可以是一个引用类型，我们可以选择`Map`这种数据结构：
+
+- 检查`map`中有无克隆过的对象
+- 有 - 直接返回
+- 没有 - 将当前对象作为`key`，克隆对象作为`value`进行存储
+- 继续克隆
+
+
+作者：ConardLi链接：https://juejin.im/post/5d6aa4f96fb9a06b112ad5b1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 百度面试题
 
 in 的应用：
 
@@ -254,6 +357,6 @@ https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/in
 
 
 
-### 阿里面试：
+## 阿里面试：
 
  怎么判断两个对象相等？

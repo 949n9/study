@@ -48,3 +48,9 @@ Router中有两种模式：
 
 [HTML DOM addEventListener() 方法](https://www.runoob.com/jsref/met-element-addeventlistener.html)
 
+
+
+
+
+<img src="https://tva1.sinaimg.cn/large/006y8mN6ly1g73q4x5m4rj30jy13sn43.jpg" alt="image-20190918155554500" style="zoom: 50%;" />
+
