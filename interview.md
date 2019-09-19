@@ -274,6 +274,7 @@ JSON.parse(JSON.stringify(object))
         return target
     }
 }
+
   //解决循环引用问题
   //但是对于symbol类型等其他类型还是不能使用
   //后续可以参考下文链接，或者使用lodash的深克隆
@@ -318,7 +319,7 @@ JSON.parse(JSON.stringify(object))
 函数防抖的原理也非常地简单，通过闭包保存一个标记来保存 `setTimeout` 返回的值，每当用户输入的时候把前一个 `setTimeout` clear 掉，然后又创建一个新的 `setTimeout`，这样就能保证输入字符后的 `interval` 间隔内如果还有字符输入的话，就不会执行 `fn` 函数了。
 
 ```js
-function debounce(fn, interval = 300) {
+function debounce(fn, interval) {
     let timeout = null;
     return function () {
         clearTimeout(timeout);
@@ -328,6 +329,14 @@ function debounce(fn, interval = 300) {
     };
 }
 ```
+
+> - 代码解读
+> 1. 第一次调用函数，创建一个定时器，在指定的时间间隔之后运行代码；
+> 2. 当第二次调用该函数时，它会清除前一次的定时器并设置另一个；
+> 3. 如果前一个定时器已经执行过了，这个操作就没有任何意义；
+> 4. 然而，如果前一个定时器尚未执行，其实就是将其替换为一个新的定时器；
+> 5. 目的是**只有在执行函数的请求停止了delay时间之后才执行**。
+
 
 
 
@@ -355,16 +364,19 @@ function throttle(fn, interval) {
     };
 }
 // 第一种写法
-
-function throttle(cb, ms) {
-  let timer = null;
-  const ctx = this;
-  return (...args) => {
-    clearTimeout(timer);
-    timer = setTimeout(cb.bind(ctx, ...args), ms);
-  };
+function throttle(fn, threshold, scope) {
+    let timer;
+    let prev = Date.now();
+    return function () {
+        let context = scope || this, args = arguments;
+        let now = Date.now();
+        if (now - prev > threshold) {
+            prev = now;
+            fn.apply(context, args);
+        }
+    }
 }
-//  es6 写法
+// 第二种时间戳写法
 
 
 const t = throttle(console.log, 1000);
@@ -385,6 +397,15 @@ setTimeout(() => t("world"), 1200);
 **应用：**
 
 以判断页面是否滚动到底部为例，普通的做法就是监听 `window` 对象的 `scroll` 事件，然后再函数体中写入判断是否滚动到底部的逻辑，这样做的一个缺点就是比较消耗性能，因为当在滚动的时候，浏览器会无时不刻地在计算判断是否滚动到底部的逻辑，而在实际的场景中是不需要这么做的，在实际场景中可能是这样的：在滚动过程中，每隔一段时间在去计算这个判断逻辑。而函数节流所做的工作就是每隔一段时间去执行一次原本需要无时不刻地在执行的函数，所以在滚动事件中引入函数的节流是一个非常好的实践。
+
+
+
+**场景**
+
+| 类型     | 场景                                                         |
+| -------- | ------------------------------------------------------------ |
+| 函数防抖 | 1. 手机号、邮箱输入检测 2. 搜索框搜索输入（只需最后一次输入完后，再放松Ajax请求） 3. 窗口大小`resize`（只需窗口调整完成后，计算窗口大小，防止重复渲染） 4.滚动事件`scroll`（只需执行触发的最后一次滚动事件的处理程序） 5. 文本输入的验证（连续输入文字后发送 AJAX 请求进行验证，（停止输入后）验证一次就好 |
+| 函数节流 | 1. `DOM`元素的拖拽功能实现（`mousemove`） 2. 射击游戏的 `mousedown`/`keydown`事件（单位时间只能发射一颗子弹） 3. 计算鼠标移动的距离（`mousemove`） 4. 搜索联想（`keyup`） 5. 滚动事件`scroll`，（只要页面滚动就会间隔一段时间判断一次） |
 
 
 
