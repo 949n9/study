@@ -238,28 +238,6 @@ for( let i = 0; i < 5; i++){
 
 > 创建一个新对象，这个对象有着原始对象属性值的一份精确拷贝。如果属性是基本类型，拷贝的就是基本类型的值，如果属性是引用类型，拷贝的就是内存地址 ，所以如果其中一个对象改变了这个地址，就会影响到另一个对象。
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ### 深拷贝
 
 网上比较流行的一个方案是：
@@ -281,21 +259,21 @@ JSON.parse(JSON.stringify(object))
 如果出现上述情况的，都不可以用这个方法去拷贝。
 
 ```js
-function clone(target, map = new weakMap()) {
-    if (typeof target === 'object') {
-        let cloneTarget = Array.isArray(target) ? [] : {};
-        if (map.get(target)) {
-            return map.get(target);
+  function clone(target, map = new map()) {
+    if (typeof target === 'object'){
+        let cloneTarget = Array.isArray(target)? [] : {}
+        if(map.get(target)){
+            return map.get(target)
         }
-        map.set(target, cloneTarget);
-        for (const key in target) {
-            cloneTarget[key] = clone(target[key], map);
+        map.set(target, cloneTarget)
+        for(const key in target){
+            cloneTarget[key] = clone(target[key],map)
         }
-        return cloneTarget;
+        return cloneTarget
     } else {
-        return target;
-   
-};
+        return target
+    }
+}
   //解决循环引用问题
   //但是对于symbol类型等其他类型还是不能使用
   //后续可以参考下文链接，或者使用lodash的深克隆
@@ -323,13 +301,90 @@ function clone(target, map = new weakMap()) {
 
 
 
+## 函数节流和函数防抖
+
+#### 什么是函数节流和函数防抖？
+
+函数防抖和函数节流都是为了防止函数被频繁调用从而造成性能的降低，用户体验差的问题。
+
+下面这张图就可以防抖和节流，一根竖线代表函数执行了一次
+
+![image-20190919110712373](https://tva1.sinaimg.cn/large/006y8mN6ly1g74netfvh7j30xs0lkta6.jpg)
+
+#### 函数防抖
+
+函数防抖: 任务频繁触发的情况下，只有任务触发的间隔超过指定间隔的时候，任务才会执行。
+
+函数防抖的原理也非常地简单，通过闭包保存一个标记来保存 `setTimeout` 返回的值，每当用户输入的时候把前一个 `setTimeout` clear 掉，然后又创建一个新的 `setTimeout`，这样就能保证输入字符后的 `interval` 间隔内如果还有字符输入的话，就不会执行 `fn` 函数了。
+
+```js
+function debounce(fn, interval = 300) {
+    let timeout = null;
+    return function () {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            fn.apply(this, arguments);
+        }, interval);
+    };
+}
+```
 
 
 
+**应用：**
+
+这里以用户注册时验证用户名是否被占用为例，如今很多网站为了提高用户体验，不会再输入框失去焦点的时候再去判断用户名是否被占用，而是在输入的时候就在判断这个用户名是否已被注册，当用户输入第一个字符的时候，就开始请求判断了，不仅对服务器的压力增大了，对用户体验也未必比原来的好。而理想的做法应该是这样的，当用户输入第一个字符后的一段时间内如果还有字符输入的话，那就暂时不去请求判断用户名是否被占用。在这里引入函数防抖就能很好地解决这个问题。
+
+
+#### 函数节流
+
+函数节流: 指定时间间隔内只会执行一次任务；
+
+原理，函数的节流就是通过闭包保存一个标记（`canRun = true`），在函数的开头**判断**这个标记是否为 `true`，如果为 `true` 的话就继续执行函数，否则则 return 掉，判断完标记后立即把这个标记设为 `false`，然后把外部传入的函数的执行包在一个 `setTimeout` 中，最后在 `setTimeout` 执行完毕后再把标记设置为 `true`（这里很关键），表示可以执行下一次的循环了。当 `setTimeout` 还未执行的时候，`canRun` 这个标记始终为 `false`，在开头的判断中被 return 掉。
+
+```js
+function throttle(fn, interval) {
+    let canRun = true;
+    return function () {
+        if (!canRun) return;
+        canRun = false;
+        setTimeout(() => {
+            fn.apply(this, arguments);
+            canRun = true;
+        }, interval);
+    };
+}
+// 第一种写法
+
+function throttle(cb, ms) {
+  let timer = null;
+  const ctx = this;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(cb.bind(ctx, ...args), ms);
+  };
+}
+//  es6 写法
+
+
+const t = throttle(console.log, 1000);
+
+t("hello");
+t("hello");
+t("hello");
+
+setTimeout(() => t("world"), 1100);
+
+setTimeout(() => t("world"), 1200);
+
+//测试用例
+```
 
 
 
+**应用：**
 
+以判断页面是否滚动到底部为例，普通的做法就是监听 `window` 对象的 `scroll` 事件，然后再函数体中写入判断是否滚动到底部的逻辑，这样做的一个缺点就是比较消耗性能，因为当在滚动的时候，浏览器会无时不刻地在计算判断是否滚动到底部的逻辑，而在实际的场景中是不需要这么做的，在实际场景中可能是这样的：在滚动过程中，每隔一段时间在去计算这个判断逻辑。而函数节流所做的工作就是每隔一段时间去执行一次原本需要无时不刻地在执行的函数，所以在滚动事件中引入函数的节流是一个非常好的实践。
 
 
 
