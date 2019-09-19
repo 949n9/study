@@ -407,6 +407,103 @@ setTimeout(() => t("world"), 1200);
 | 函数防抖 | 1. 手机号、邮箱输入检测 2. 搜索框搜索输入（只需最后一次输入完后，再放松Ajax请求） 3. 窗口大小`resize`（只需窗口调整完成后，计算窗口大小，防止重复渲染） 4.滚动事件`scroll`（只需执行触发的最后一次滚动事件的处理程序） 5. 文本输入的验证（连续输入文字后发送 AJAX 请求进行验证，（停止输入后）验证一次就好 |
 | 函数节流 | 1. `DOM`元素的拖拽功能实现（`mousemove`） 2. 射击游戏的 `mousedown`/`keydown`事件（单位时间只能发射一颗子弹） 3. 计算鼠标移动的距离（`mousemove`） 4. 搜索联想（`keyup`） 5. 滚动事件`scroll`，（只要页面滚动就会间隔一段时间判断一次） |
 
+参考：https://justclear.github.io/throttle-and-debounce/
+
+​				https://juejin.im/post/5c00f7fe51882516be2ee2fc
+
+
+
+
+
+## 判断类型
+
+### typeof
+
+**适用场景**
+
+`typeof`操作符可以准确判断一个变量是否为下面几个原始类型：
+
+```js
+typeof 'ConardLi'  // string
+typeof 123  // number
+typeof true  // boolean
+typeof Symbol()  // symbol
+typeof undefined  // undefined
+复制代码
+```
+
+你还可以用它来判断函数类型：
+
+```js
+typeof function(){}  // function
+复制代码
+```
+
+**不适用场景**
+
+当你用`typeof`来判断引用类型时似乎显得有些乏力了：
+
+```js
+typeof [] // object
+typeof {} // object
+typeof new Date() // object
+typeof /^\d*$/; // object
+复制代码
+```
+
+除函数外所有的引用类型都会被判定为`object`。
+
+另外`typeof null === 'object'`也会让人感到头痛，这是在`JavaScript`初版就流传下来的`bug`，后面由于修改会造成大量的兼容问题就一直没有被修复...
+
+### instanceof
+
+`instanceof`操作符可以帮助我们判断引用类型具体是什么类型的对象：
+
+```
+[] instanceof Array // true
+new Date() instanceof Date // true
+new RegExp() instanceof RegExp // true
+复制代码
+```
+
+我们先来回顾下原型链的几条规则：
+
+- 1.所有引用类型都具有对象特性，即可以自由扩展属性
+- 2.所有引用类型都具有一个`__proto__`（隐式原型）属性，是一个普通对象
+- 3.所有的函数都具有`prototype`（显式原型）属性，也是一个普通对象
+- 4.所有引用类型`__proto__`值指向它构造函数的`prototype`
+- 5.当试图得到一个对象的属性时，如果变量本身没有这个属性，则会去他的`__proto__`中去找
+
+`[] instanceof Array`实际上是判断`Array.prototype`是否在`[]`的原型链上。
+
+所以，使用`instanceof`来检测数据类型，不会很准确，这不是它设计的初衷：
+
+```
+[] instanceof Object // true
+function(){}  instanceof Object // true
+复制代码
+```
+
+另外，使用`instanceof`也不能检测基本数据类型，所以`instanceof`并不是一个很好的选择。
+
+### toString
+
+上面我们在拆箱操作中提到了`toString`函数，我们可以调用它实现从引用类型的转换。
+
+> 每一个引用类型都有`toString`方法，默认情况下，`toString()`方法被每个`Object`对象继承。如果此方法在自定义对象中未被覆盖，`toString()`返回 `"[object type]"`，其中`type`是对象的类型。
+
+```
+const obj = {};
+obj.toString() // [object Object]
+复制代码
+```
+
+注意，上面提到了`如果此方法在自定义对象中未被覆盖`，`toString`才会达到预想的效果，事实上，大部分引用类型比如`Array、Date、RegExp`等都重写了`toString`方法。
+
+我们可以直接调用`Object`原型上未被覆盖的`toString()`方法，使用`call`来改变`this`指向来达到我们想要的效果。
+
+![image-20190919190010631](https://tva1.sinaimg.cn/large/006y8mN6ly1g751371c0gj30xi0u07wh.jpg)
+
 
 
 ## 百度面试题
