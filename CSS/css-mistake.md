@@ -216,3 +216,22 @@ IFC中的line box一般左右都贴紧整个IFC，但是会因为float元素而�
 ####css动画最小间隔 
 > 多数显示器的默认频率是60HZ，即每秒刷新60次。所以理论上的最小间隔是 1/60*1000ms = 16.7ms
 
+
+
+
+
+## 垂直居中
+
+HTML结构为<parent><child>content</child></parent>下列哪些做法可以实现child内容垂直居中？
+
+![image-20190921002959690](https://tva1.sinaimg.cn/large/006y8mN6ly1g76g8habetj311b0u0wij.jpg)
+
+A:把parent变成table，再把子元素变为table-cell，而vertical-align属性可以设置元素垂直对齐，前提条件：只能应用于内联元素以及display值为table-cell的元素。
+
+B：弹性布局。align-items：center为设置子元素在侧轴方向上居中对齐，弹性布局默认主轴方向为row（即从左到右），侧轴就是就是column(从上到下）。
+
+C：定位。父元素设置相对定位，子元素设置绝对定位，子元素的top值设置为50%（即父元素高度的50%），注意：此时是child元素的左上角（0,0），移到了parent元素的（0,parent高度的50%），而不是子元素的中心点移到了父元素垂直方向的中心点。因此子元素需要往上移动自身高度的50%，即transform：translateY（-50%）。
+
+D：设置伪元素。vertical-align属性定义行内元素的基线相对于该元素所在行的基线的垂直对齐。打个比方：有两个行内元素a和b，a和b都是img，如果a加了vertical-align:middle样式，b的底部（基线）就会对齐a的中间位置；如果a和b都加了一个vertical-align:middle样式。那么就互相对齐了对方的中间位置，也就是它们在垂直方向上的中线对齐了。
+
+而伪元素的display属性默认值为inline，行内元素是无法设置宽高的，想要设置宽高需要将之设置为block或者inline-block。所以D有错误，应该将：after设置为inline-block才行
