@@ -413,6 +413,61 @@ setTimeout(() => t("world"), 1200);
 
 
 
+## 实现简单的curry
+
+### 什么是curry
+
+柯里化是一种将使用多个参数的一个函数转换成一系列使用一个参数的函数的技术。
+
+举例来说，一个接收3个参数的普通函数，在进行柯里化后， 柯里化版本的函数接收一个参数并返回接收下一个参数的函数， 该函数返回一个接收第三个参数的函数。 最后一个函数在接收第三个参数后， 将之前接收到的三个参数应用于原普通函数中，并返回最终结果。
+
+lodash的文档是这么写的
+
+```js
+var abc = function(a, b, c) { return [a, b, c];};
+var curried = _.curry(abc);
+curried(1)(2)(3); // => [1, 2, 3]
+curried(1, 2)(3); // => [1, 2, 3]
+curried(1, 2, 3); // => [1, 2, 3]
+// Curried with placeholders.
+curried(1)(_, 3)(2); // => [1, 2, 3]
+```
+
+### 实现简单的函数柯里化
+
+```js
+function curry(fn) {
+  const ctx = this;
+  function inner(...args) {
+    if (args.length === fn.length) return fn.call(ctx, ...args);
+    return (...innerArgs) => inner.call(ctx, ...args, ...innerArgs);
+  }
+
+  return inner;
+}
+
+// test
+function test(a, b, c) {
+  console.log(a, b, c);
+}
+
+const f1 = curry(test)(1);
+const f2 = f1(2);
+f2(3);
+
+
+//es5
+function curry (fn, arr = []) {
+    return fn.length === arr.length ? fn.apply(null, arr) : function (...args) {
+        return curry (fn, arr.concat(args))
+    }
+}
+
+
+// 一行实现
+const curry = (fn, arr = []) => fn.length === arr.length ? fn(...arr) : (...args) => curry(fn, [...arr, ...args]);
+```
+
 
 
 ## 判断类型
