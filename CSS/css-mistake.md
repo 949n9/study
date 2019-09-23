@@ -233,7 +233,7 @@ D：设置伪元素。vertical-align属性定义行内元素的基线相对于�
 
 
 
-#### 如何渲染几万条数据并不卡住界面
+## 如何渲染几万条数据并不卡住界面
 
 这道题考察了如何在不卡住页面的情况下渲染数据，也就是说不能一次性将几万条都渲染出来，而应该一次渲染部分 DOM，那么就可以通过 `requestAnimationFrame` 来每 16 ms 刷新一次。
 
@@ -293,3 +293,40 @@ D：设置伪元素。vertical-align属性定义行内元素的基线相对于�
 
 
 详情见MDN：https://developer.mozilla.org/zh-CN/docs/Web/API/Document/createDocumentFragment
+
+
+
+
+
+
+
+## 如何理解line-height
+
+指一行文字的高度。具体来说是指两行文字间基线之间的距离。
+
+如果一个标签没有定义height属性(包括百分比高度)，那么其最终表现的高度一定是由line-height起作用（在**inline box模型**中，有个**line boxes** 高度是靠堆积起来的）
+
+把line-height值设置为height一样大小的值可以实现单行文字的垂直居中
+
+行高的几种表示方法：px/em，或normal，或百分值，或数值，或inherit继承。
+
+
+
+## link标签和@import引入css有什么区别
+
+1. 两者导入的语法不同
+    link(链接式语法)
+
+    <link rel="stylesheet" href="style.css">
+    @import的语法不同：
+
+    <style type="text/css">
+    @import url("style.css")
+    </style>
+2. link和import语法结构不同，前者是html标签，只能放在html源代码中使用，link除了可以加载css外，还可以做很多其他事情，比如定义RSS，定义rel连接属性等。@import看作CSS样式，只能加载CSS
+
+3. 使用link方式，浏览器将css文件和HTML的主题部分一同加载，所以显示出来的页面从一开始就是带样式效果的；而采用@import方式，浏览器则会先装在完整个HTML文件再装载CSS文件
+
+4. 当使用javascript控制DOM去改变样式的，只能用link方式，因为@import眼里只有CSS ，不是DOM可以操控的。
+5. link是XHTML标签，无兼容问题，@import是在CSS2.1提出的，低版本的浏览器不支持
+
