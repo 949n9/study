@@ -1,4 +1,4 @@
-# Http
+
 
 ## 网络模型
 
@@ -56,6 +56,8 @@
 - 浏览器解析渲染页面
 - 连接结束
 
+
+
 #### DNS解析
 
 DNS解析实际上就是寻找你所需要的资源的过程。假设你输入`www.baidu.com`，而这个网址并不是百度的真实地址，互联网中每一台机器都有唯一标识的IP地址，这个才是关键，但是它不好记，乱七八糟一串数字谁记得住啊，所以就需要一个网址和IP地址的转换，也就是DNS解析。
@@ -74,9 +76,11 @@ https://juejin.im/post/5cc573c85188252e741ccbb6
 
 
 
+## https和http有什么区别？
 
 
 
+## TCP 握手，分手，拥塞控制，流量控制
 
 
 管线化
@@ -118,3 +122,29 @@ Response header
 
 
 <img src="https://tva1.sinaimg.cn/large/006y8mN6ly1g73zlo6nndj30t81864fb.jpg" alt="image-20190918212322709" style="zoom:50%;" />
+
+
+
+### 解析URL成为对象
+
+```
+var url = "https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&rsv_idx=1&tn=baidu&wd=nodemon&rsv_sug4=2634";
+
+function parseQueryString(url){
+    var urlKey = url.split("?")[1]
+    var objKeyValue ={}
+    if(urlKey){
+        var urlObj = urlKey.split("&")
+        // 以对象形式存放
+        for(var i = 0; i<urlObj.length;i++){
+            objKeyValue[urlObj[i].split("=")[0]] = urlObj[i].split("=")[1]
+        }
+        return objKeyValue
+    }else{
+        return "暂无参数"
+    }
+}
+
+var s = parseQueryString(url)
+console.log(s)
+```

@@ -561,6 +561,42 @@ obj.toString() // [object Object]
 
 
 
+## 用JS，HTML原生实现轮播图
+
+
+
+
+
+## 实现一下EventEmitter
+
+```js
+
+class EventEmitter {
+    constructor () {
+        this._eventpool = {};
+    }
+    on (event, callback) {
+        this._eventpool[event] ? this._eventpool[event].push(callback) : this._eventpool[event] = [callback]
+    }
+    emit (event, ...args) {
+        this._eventpool[event] && this._eventpool[event].forEach(cb => cb(...args))
+    }
+    off (event) {
+        if (this._eventpool[event]) {
+            delete this._eventpool[event]
+        }
+    }
+    once (event, callback) {
+        this.on(event, (...args) => {
+            callback(...args);
+            this.off(event)
+        })
+    }
+}
+```
+
+
+
 ## 百度面试题
 
 in 的应用：
@@ -583,8 +619,97 @@ https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/in
 
 
 
+## 关于内存泄漏
 
+https://juejin.im/post/5cb33660e51d456e811d2687#heading-10
 
 ## 阿里面试：
 
  怎么判断两个对象相等？
+
+## 未整理
+
+
+
+* CSS3的选择器
+
+* 圆角 border-radius
+
+* 多列布局 （multi-column layout）
+
+* 阴影（Shadow） text-shadow
+
+* css弹性盒子模型
+
+* CSS3制作特效
+
+  1) Transition 对象变换时的过渡效果
+
+  *  transition-property 对象参与过渡的属性
+  *  transition-duration 过渡的持续时间
+  *  transition-timing-function 过渡的类型
+  *  transition-delay 延迟过渡的时间
+
+
+
+内嵌音频
+
+```
+<audio src="xxx.mp3" id="myAudio">Audio player not available.</audio>
+```
+
+媒体标签
+ video
+多媒体标签
+ embed
+
+
+
+
+
+
+
+
+
+9.如何理解闭包
+
+1、定义： 嵌套在函数作用域中的函数，称为闭包函数。该作用域称为闭包环境。通过闭包函数可以访问闭包函数所在函数作用域中的形参与变量
+
+2、表现形式： 使函数外部能够调用函数内部定义的变量
+
+3、工作原理：
+ 利用了js中的垃圾回收机制，当一个函数被调用时，开辟空间，函数调用结束，释放空间，垃圾回收机制释放被调用结束的函数时，发现函数的变量正在被其他的函数调用，这些变量不会被释放，而且被永久驻留在内存，只有退出程序，才会被释放，或者是手工释放（=null） 
+
+4、变量的作用域
+
+要理解闭包，首先必须理解Javascript特殊的变量作用域。
+
+变量的作用域分类：全局变量和局部变量。
+
+特点：
+
+1、函数内部可以读取函数外部的全局变量；在函数外部无法读取函数内的局部变量。
+
+2、函数内部声明变量的时候，一定要使用var命令。如果不用的话，你实际上声明了一个全局变量！
+
+ 5、使用闭包的注意点
+
+1）滥用闭包，会造成内存泄漏：由于闭包会使得函数中的变量都被保存在内存中，内存消耗很大，所以不能滥用闭包，否则会造成网页的性能问题，在IE中可能导致内存泄露。解决方法是，在退出函数之前，将不使用的局部变量全部删除。
+
+2）会改变父函数内部变量的值。所以，如果你把父函数当作对象（object）使用，把闭包当作它的公用方法（Public Method），把内部变量当作它的私有属性（private value），这时一定要小心，不要随便改变父函数内部变量的值。
+
+
+
+10.
+
+由于浏览器同源策略，凡是发送请求URL的协议、域名、端口三者之间任意一与当前页面地址不同即为跨域。
+
+（1）JSONP（jsonp跨域get请求） 
+​     这种方式主要是通过动态创建一个script标签，浏览器对script的资源引用没有同源限制，同时资源加载到页面后会立即执行；（创建script标签向不同域提交http请求的不会被拒绝的方法，jsonp标签的src属性是没有跨域限制的）
+​     实际项目中JSONP通常用来获取json格式数据，这时前后端通常约定一个参数callback，该参数的值，就是处理返回数据的函数名称；
+缺点：这种方式无法发送post请求，另外要确定jsonp的请求是否失败并不容易，大多数框架的实现都是结合超时时间来判断。
+（2）proxy 代理
+这种方式首先将请求发送给后台服务器，通过服务器来发送请求，然后将请求的结果传递给前端；
+需要注意的是如果你代理的是https协议的请求，那么你的proxy首先需要信任该证书或者忽略证书检查，否则你的请求无法成功。
+（3）cors
+当你使用XMLHttpRequest发送请求时，浏览器发现该请求不符合同源策略，会给该请求头origin，后台进行一系列处理，如果确定接受请求则在返回结果加入一个响应头Access-Control-Allow-Origin；浏览器判断该响应头中是否包含Origin的值，如果有则浏览器会处理响应，我们就可以拿到响应数据，如果不包含浏览器直接驳回，这时我们无法拿到响应数据； 

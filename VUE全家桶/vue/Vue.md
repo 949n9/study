@@ -64,3 +64,54 @@ export default{
 
 
 
+
+
+
+
+## 实例的生命周期
+
+beforeCreate:
+
+解释：组件实例化之前，也就是初始化组件之前
+
+表现：`data`和`methods`中的东西还取不到值
+
+created：
+
+解释： 组件实例化完成，但是还没有编译模板
+
+表现：可以取`data`和`methods`中的值。但是
+
+beforeMount
+
+解释：模板已经编译完成了，但是还没有渲染。
+
+表现： 通过`document.getElementById()`获取不到值
+
+mounted：
+
+解释：模板已经渲染完成了。
+
+表现：可以通过`document.getElementById()`获得模板元素
+
+beforeUpdate
+
+解释：在数据更新之前
+
+表现：`data`中的值已经改变了，但是模板中的值还没有改变
+
+updated
+
+解释：虚拟DOM重新渲染，并且应用更新
+
+表现：`data`中的值和模板中的值都完成了更新
+
+beforeDestroy
+
+解释：在组件被销毁之前
+
+表现：如果页面存在定时器或者其他子组件，监听器，可以在这个钩子上清除
+
+Destroyed
+
+解释： 销毁完毕
