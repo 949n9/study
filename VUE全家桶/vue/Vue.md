@@ -22,19 +22,42 @@ props: {
 
 ### 子组件向父组件传值
 
-应用场景
-
-自定义事件传值，要把数据暴露出去首先要掌握一个api `watch`
-
 ```html
 //子组件
-watch :{
-	//监听currentValue的变化
-  currentValue(value){
-  		this.$emit("自定义事件名"， value)
-  }
-}
+<template>
+  <button  @click="$emit('自定义事件'，值)" >click this!</button>
+</template>
+//子组件也可以这么写
+<template>
+  <button  @click="someChange" >click this!</button>
+</template>
 
+<scirpt>
+export defalut {
+  		...
+  		methods: {
+  			someChange(){
+  				this.$emit('自定义事件名'，值)
+	 		}
+  	}
+  }
+</scirpt>
+
+```
+
+然后父组件接收自定义事件名和值，值默认在第一个参数，或者可以用`$event`取到。
+当在父级组件监听这个事件的时候，我们可以通过` $event `访问到被抛出的这个值   --- 官方案例
+
+```html
+<blog-post
+  ...
+  v-on:enlarge-text="postFontSize += $event"
+></blog-post>
+```
+
+或者这样：
+
+```js
 //父组件
 <my-component @自定义事件名></my-component>
 
@@ -46,13 +69,24 @@ export default{
 				}
 		}
 }
-
 </script>
 ```
 
-1.子组件内部的值发生变化：
 
-2.通过触发一个$emit（'自定义事件名'，’自定义事件所需要传出的值）
+
+当然我们还可以用到`watch`这个api ，用来监控子组件里面的某个值，如果某个值发生变化的时候，自动给父组件发送自定义事件。
+
+```html
+<script>
+  export default {
+    watch :{
+      val: function(newVal,oldVal){
+        this.$emit('自定义事件'，值)
+      }
+    }
+  }
+</script>
+```
 
 
 
