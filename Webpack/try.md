@@ -65,3 +65,85 @@ npm install webpack webpack-cli --save-dev
 //配置指令，这里是配置打包指令
 ```
 
+
+
+
+
+在 webpack 4 中，可以无须任何配置使用，然而大多数项目会需要很复杂的设置，这就是为什么 webpack 仍然要支持 [配置文件](https://www.webpackjs.com/concepts/configuration)。这比在终端(terminal)中手动输入大量命令要高效的多，所以让我们创建一个取代以上使用 CLI 选项方式的配置文件：
+
+```js
+  webpack-demo
+  |- package.json
++ |- webpack.config.js
+  |- /dist
+    |- index.html
+  |- /src
+    |- index.js
+```
+
+
+
+**webpack.config.js**：
+
+```
+const path = require('path')
+//引入路径模块
+
+module.export = {
+	entry:'./src/index.js',
+	output:{
+		filename: ''
+		path: path.resolve(__dirname,'dist')
+	}
+}
+
+
+如果我们的入口文件有多个，我们可以这样配置
+module.export = {
+	entry: {
+			index: './src/index.js',
+			about: './src/about.js'
+	},
+	//这里的键名就打包后的名字，对应下面的name
+	output:{
+		filename: '[name].[contenthash:7].js'
+		//入口文件，contenthash是根据内容生成一段Hash，：7代表生成的hash是7位的
+		chunkFilename: '[id].[chunkhash:7].js'
+		//chunkFile 就是我们在入口文件里面动态加载的css或者js文件，属于非入口文件
+		path： path.resolve(__dirname,'dist')
+	},
+	mode: production
+	//指的是生产环境，就是会对源码进行压缩。也可以是development 不压缩
+}
+```
+
+## plugins
+
+### clean-webpack-plugin
+
+因为每一次打包，如果内容变了，都会生成新的打包文件， 手动删除以前的打包文件会显得很麻烦，通常，在每次构建前清理 `/dist` 文件夹，是比较推荐的做法，因此用到了`clean-webpack-plugin`
+
+> 需要注意的一点是，由于clean-webpack-plugin已经升级了，所以在官网的用法可能会报错，如果是最新的版本就需要结构出
+>
+> `CleanWebpackPlugin`，用法参考下面。
+
+```js
+  const path = require('path');
+  const HtmlWebpackPlugin = require('html-webpack-plugin');
+  const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+
+  module.exports = {
+    entry: {
+      app: './src/index.js',
+      print: './src/print.js'
+    },
+    plugins: [
+      new CleanWebpackPlugin(),
+    ],
+    output: {
+      filename: '[name].bundle.js',
+      path: path.resolve(__dirname, 'dist')
+    }
+  };
+```
+
