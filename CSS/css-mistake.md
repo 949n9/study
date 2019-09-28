@@ -359,8 +359,12 @@ D：设置伪元素。vertical-align属性定义行内元素的基线相对于�
 		使网页能自适应的显示在不同大小终端设备上的新网页设计方式及技术，它需要开发多套界面来适应不同的终端。
 		
 		核心方法：
-
+	
 		自适应布局通过检测视口分辨率，来判断当前访问的设备是：pc端、平板、手机，从而请求服务层，返回不同的页面；
 		同时也采用rem
 		即<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+
+
+
+## box-sizing
 

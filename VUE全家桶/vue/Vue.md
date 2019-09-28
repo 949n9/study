@@ -200,6 +200,8 @@ console.log(this.$parent)
 
 ##### `$attrs`/`$listeners`
 
+**`$attrs`**：
+
 - **类型**：`{ [key: string]: string }`
 
 - **只读**
@@ -297,27 +299,326 @@ export default {
 
 
 
+> 需要注意的两点:
+>
+> 作为中间传递数据的组件，必须要把 inheritAttrs 这个选项设置为 false 才能正确获取 $attrs 数据。
+> v-bind 在平常使用时都是使用 v-bind:src=xx 或者 :src=xx 这种形式， 这里使用 v-bind=xx 是指绑定一个包含键值对的对象到组件。
+
+
+
+**`$listeners`**：
+
+- **类型**：`{ [key: string]: Function | Array<Function> }`
+
+- **只读**
+
+- **详细**：
+
+  包含了父作用域中的 (不含 `.native` 修饰器的) `v-on` 事件监听器。它可以通过 `v-on="$listeners"` 传入内部组件——在创建更高层次的组件时非常有用。
+
+
+
+与`$attrs`的用法和作用很类似，但是`$attrs`是用来传递数据的，`$listeners`是用来传递方法。
+
+同 `$attrs` 的使用相似, 中间组件对于父级传递的事件并没有使用，也是作为一个过度，使用 `v-on='this.$listeners'` 将从父级接受来的事件再次向下传递，直到传递给最后一级组件， 最后一级的组件就能够使用` this.$listeners `来调用父级的事件，从而改变父级绑定在子组建上面的属性值。
+
+下面来个例子：
+
+孙组件：
+
+```html
+<template>
+  <div>
+      {{second}}{{third}}
+      <button @click='handleFunc1'>fuc1 button</button>
+      <button @click='handleFunc2'>fuc2 button</button>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "next",
+  props: ["second", "third"], 
+  methods: {
+      handleFunc1() {
+          this.$listeners.func1('props changed second')
+      },
+      handleFunc2() {
+          this.$listeners.func2('props changed third')
+      }
+  }
+};
+</script>
+```
+
+子组件：
+
+```html
+<template>
+  <next v-bind="$attrs" v-on='$listeners'></next>
+</template>
+
+<script>
+import Next from './next'
+export default {
+  name: "child",
+  components: {Next},
+  inheritAttrs: false
+};
+</script>
+```
+
+父组件：
+
+```html
+<template>
+ <child 
+    :second='second' 
+    :third='third'
+    @func1='Func1Click' 
+    @func2='Func2Click' 
+/>
+</template>
+
+<script>
+import Child from './child'
+export default {
+  components: {Child},
+  data(){
+      return {
+          second: 'props second',
+          third: 'props third'
+      }
+  },
+  methods:{
+      Func1Click(val) {
+         this.second = val
+      },
+      Func2Click(val) {
+         this.third = val
+      }
+  }
+};
+</script>
+```
+
+
+
+### 动态组件&异步组件
+
+
+
+#### 动态组件
+
+有时候，例如我们需要在不同组件间进行动态切换。例如一个标签选项卡。
+
+这个时候我们可以用的动态组件。 基本用法如下:
+
+* 使用Vue的 `<component>`元素
+* 使用`v-bind:is`特性
+
+```html
+<!-- 组件会在 `currentTabComponent` 改变时改变 -->
+<component v-bind:is="currentTabComponent"></component>
+```
+
+一个选项卡的例子：
+
+```html
+<script src="https://unpkg.com/vue"></script>
+
+<div id="dynamic-component-demo" class="demo">
+  <button
+    v-for="tab in tabs"
+    v-bind:key="tab"
+    v-bind:class="['tab-button', { active: currentTab === tab }]"
+    v-on:click="currentTab = tab"
+  >{{ tab }}</button>
+
+  <component
+    v-bind:is="currentTabComponent"
+    class="tab"
+  ></component>
+</div>
+```
+
+JS：
+
+```js
+Vue.component('tab-home', { 
+	template: '<div>Home component</div>' 
+})
+Vue.component('tab-posts', { 
+	template: '<div>Posts component</div>' 
+})
+Vue.component('tab-archive', { 
+	template: '<div>Archive component</div>' 
+})
+
+new Vue({
+  el: '#dynamic-component-demo',
+  data: {
+    currentTab: 'Home',
+    tabs: ['Home', 'Posts', 'Archive']
+  },
+  computed: {
+    currentTabComponent: function () {
+      return 'tab-' + this.currentTab.toLowerCase()
+    }
+  }
+})
+```
+
+在这个例子中`v-bind:is `绑定的是一个计算属性，基本思路就是当点击按钮的时候把`currentTab = tab`，然后再通过计算属性把名字还原 `tab-posts`这样，完成动态组件的切换。 
+
+
+
+在上述示例中，`currentTabComponent` 可以包括
+
+- 已注册组件的名字
+
+  上述例子就是已经注册组件的名字
+
+- 一个组件的选项对象
+
+  举个例子：
+
+  ```js
+  var tabs = [
+    {
+      name: 'Home', 
+      component: { 
+        template: '<div>Home component</div>' 
+      }
+    },
+    {
+      name: 'Posts',
+      component: {
+        template: '<div>Posts component</div>'
+      }
+    },
+    {
+      name: 'Archive',
+      component: {
+        template: '<div>Archive component</div>',
+      }
+    }
+  ]
+  
+  new Vue({
+    el: '#dynamic-component-demo',
+    data: {
+    	tabs: tabs,
+      currentTab: tabs[0]
+    }
+  })
+  ```
+
+  
+
+#### 在组件上使用 `Keep-alive`
+
+> keep-alive是一个抽象组件：它自身不会渲染一个 DOM 元素，也不会出现在父组件链中；使用keep-alive包裹动态组件时，会缓存不活动的组件实例，而不是销毁它们。
+
+当在这些组件之间切换的时候，你有时会想保持这些组件的状态，以避免反复重渲染导致的性能问题。
+
+[https://cn.vuejs.org/v2/guide/components-dynamic-async.html#%E5%9C%A8%E5%8A%A8%E6%80%81%E7%BB%84%E4%BB%B6%E4%B8%8A%E4%BD%BF%E7%94%A8-keep-alive](https://cn.vuejs.org/v2/guide/components-dynamic-async.html#在动态组件上使用-keep-alive)
+
+官方案例解释
+
+##### 基本用法
+
+```
+<!-- 失活的组件将会被缓存！-->
+<keep-alive>
+  <component v-bind:is="currentTabComponent"></component>
+</keep-alive>
+```
+
+当组件在 `<keep-alive>` 内被切换，它的 `activated` 和 `deactivated` 这两个生命周期钩子函数将会被对应执行。
+
+> 在 2.2.0 及其更高版本中，`activated` 和 `deactivated` 将会在 `<keep-alive>` 树内的所有嵌套组件中触发。
+
+##### `keep-alive`的生命周期
+
+
+
+1. activated： 页面第一次进入的时候，钩子触发的顺序是created->mounted->activated
+2. deactivated:  页面退出的时候会触发deactivated，当再次前进或者后退的时候只触发activated
+
+
+
+##### 运用场景
+
+用户在某个列表页面选择筛选条件过滤出一份数据列表，由列表页面进入数据详情页面，再返回该列表页面，我们希望：列表页面可以保留用户的筛选（或选中）状态。keep-alive就是用来解决这种场景。当然keep-alive不仅仅是能够保存页面/组件的状态这么简单，它还可以避免组件反复创建和渲染，有效提升系统性能。
+总的来说，keep-alive用于保存组件的渲染状态。
+
+
+##### props
+
+
+
+**`include` and `exclude`**
+
+* `include`定义缓存白名单，`keep-alive`会缓存命中的组件
+* `exclude`定义缓存黑名单，被命中的组件将不会被缓存
 
 
 
 
 
+二者都可以用逗号分隔字符串、正则表达式或一个数组来表示,例如我们有`a`,`b`两个组件：
+
+```html
+<!-- 逗号分隔字符串 -->
+<keep-alive include="a,b">
+  <component :is="view"></component>
+</keep-alive>
+
+<!-- 正则表达式 (使用 `v-bind`) -->
+<keep-alive :include="/a|b/">
+  <component :is="view"></component>
+</keep-alive>
+
+<!-- 数组 (使用 `v-bind`) -->
+<keep-alive :include="['a', 'b']">
+  <component :is="view"></component>
+</keep-alive>
+
+
+//这里是设置白名单
+```
+
+匹配首先检查组件自身的 `name` 选项，如果 `name` 选项不可用，则匹配它的局部注册名称 (父组件 `components` 选项的键值)。匿名组件不能被匹配。
+
+
+
+
+**`max`**
+
+`max`定义缓存组件上限，超出上限使用[LRU的策略](https://link.juejin.im/?target=https%3A%2F%2Fbaike.baidu.com%2Fitem%2FLRU)置换缓存数据。
+
+也就是说一旦这个数字达到了，在新实例被创建之前，已缓存组件中最久没有被访问的实例会被销毁掉。
+
+```html
+<keep-alive :max="10">
+  <component :is="view"></component>
+</keep-alive>
+```
+
+参考 链接：https://juejin.im/post/5cce49036fb9a031eb58a8f9
 
 
 
 
 
-**`$attrs`**：
+##### 原理
 
+Vue.js内部将DOM节点抽象成了一个个的[VNode节点](https://link.juejin.im/?target=https%3A%2F%2Fgithub.com%2Fanswershuto%2FlearnVue%2Fblob%2Fmaster%2Fdocs%2FVNode%E8%8A%82%E7%82%B9.MarkDown)，keep-alive组件的缓存也是基于VNode节点的而不是直接存储DOM结构。它将满足条件（pruneCache与pruneCache）的组件在cache对象中缓存起来，在需要重新渲染的时候再将vnode节点从cache对象中取出并渲染。
 
+附上链接
 
-
-
-
-
-
-
-
+链接：https://juejin.im/post/5cce49036fb9a031eb58a8f9
 
 
 

@@ -740,3 +740,4 @@ https://juejin.im/post/5cb33660e51d456e811d2687#heading-10
 
 
 
+> **<script>标签的defer和async属性**
