@@ -528,7 +528,7 @@ new Vue({
 
 ##### 基本用法
 
-```
+```html
 <!-- 失活的组件将会被缓存！-->
 <keep-alive>
   <component v-bind:is="currentTabComponent"></component>
