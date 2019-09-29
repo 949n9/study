@@ -741,3 +741,99 @@ https://juejin.im/post/5cb33660e51d456e811d2687#heading-10
 
 
 > **<script>标签的defer和async属性**
+
+
+
+
+
+
+
+
+
+
+
+1.用flex实现水平居中
+
+Html:
+
+```html
+<div class="father">
+    <div class="son">
+    </div>
+</div>
+```
+
+css:
+
+```css
+*{
+    margin: 0;
+    padding: 0
+}
+.father{
+    width: 400px;
+    height: 400px;
+    border: 1px dashed black;
+    display: flex;/*父元素设置flex属性*/
+    justify-content: center;/*水平主轴居中*/
+    align-items: center;/*垂直交叉轴居中*/
+}
+.son{
+    width: 100px;
+    height: 50px;
+    background: pink;
+}
+//父元素（容器）设置display属性为flex，并设置水平主轴上的元素居中，垂直交叉轴上的元素居中。
+```
+
+
+
+2.等高布局
+
+Html：
+
+```
+<div class="parent">
+        <div class="left">left</div>
+        <div class="right">right</div>
+</div>
+```
+
+Css：
+
+使用flex：
+
+```css
+.parent{ display: flex; }
+.left,.right{ flex: 1; }
+```
+
+
+
+4.检索字符
+
+```js
+let str = 'aerozhonghuan'
+console.log(str.indexOf('s'))
+//search,如果找到，返回值得索引，找不到为-1
+
+let Rex = 's'
+console.log(str.search(/s/g))
+//search,如果找到，返回值得索引，找不到为-1
+
+console.log(str.match(/s/g))
+//match 如果找到，返回匹配的值组成的数组，找不到为null
+```
+
+
+
+5.获取屏幕点的方法
+
+```js
+        function getScreen(e) {
+            var x = e.screenX - e.clientX;
+            var y = e.screenY - e.clientY;
+            alert("X坐标：" + x + ",Y坐标：" + y);
+        }
+```
+
