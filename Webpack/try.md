@@ -147,3 +147,24 @@ module.export = {
   };
 ```
 
+### webpack-devserve
+
+用来热更新
+
+```
+devServer:{
+	contentBase: './dist',
+	//配置热更新的文件夹
+	host：‘localhost’,
+	port: 8080
+	compress: true 
+	//是否
+}
+```
+
+
+
+### HtmlwebpackPlugin
+
+用来自动生成html文件
+
