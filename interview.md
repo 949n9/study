@@ -597,6 +597,50 @@ class EventEmitter {
 
 
 
+## 编程题
+
+### 判断一个字符串是不是回文
+
+#### 回文
+
+定义： 类似于'noon'或者'level'这样，是一个正读和反读都一样的**字符串**
+
+#### reverse
+
+```js
+function Palindromes(str) {
+    let reg = /[\W_]/g; // \w 匹配所有字母和数字以及下划线； \W与之相反； [\W_] 表示匹配下划线或者所有非字母非数字中的任意一个；/g全局匹配
+    let newStr = str.replace(reg, '').toLowerCase();
+    let reverseStr = newStr.split('').reverse().join('')
+    return reverseStr === newStr; // 与 newStr 对比
+}
+// str.split('').reverse().join('') === str
+```
+
+#### 递归
+
+```js
+function palin(str) {
+    let reg = /[\W_]/g;
+    let newStr = str.replace(reg, '').toLowerCase();
+    let len = newStr.length;
+    while(len >= 1) {
+        console.log('--')
+        if(newStr[0] != newStr[len - 1]) {
+            // len = 0; // 为了终止 while 循环 否则会陷入死循环
+            return false;
+        } else {
+            return palin(newStr.slice(1, len - 1)); 
+        // 截掉收尾字符 再次比较收尾字符是否相等 
+        // 直到字符串剩下一个字符（奇数项）或者 0 个字符（偶数项）
+        }
+    }
+    return true;
+}
+```
+
+
+
 ## 百度面试题
 
 in 的应用：
@@ -617,6 +661,96 @@ https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/in
 
 
 
+
+
+
+
+
+
+## 移动端300ms延迟，点击穿透
+
+### 移动端300ms点击延迟由来：
+
+**故事：**2007 年初。苹果公司在发布首款 iPhone 前夕，遇到一个问题：当时的网站都是为大屏幕设备所设计的。于是苹果的工程师们做了一些约定，应对 iPhone 这种小屏幕浏览桌面端站点的问题。
+
+这当中最出名的，当属双击缩放(double tap to zoom)，这也是会有上述 300 毫秒延迟的主要原因。
+
+双击缩放，顾名思义，即用手指在屏幕上快速点击两次，iOS 自带的 Safari 浏览器会将网页缩放至原始比例。 那么这和 300 毫秒延迟有什么联系呢？ 假定这么一个场景。用户在 iOS Safari 里边点击了一个链接。由于用户可以进行双击缩放或者双击滚动的操作，当用户一次点击屏幕之后，浏览器并不能立刻判断用户是确实要打开这个链接，还是想要进行双击操作。因此，iOS Safari 就等待 300 毫秒，以判断用户是否再次点击了屏幕。 鉴于iPhone的成功，其他移动浏览器都复制了 iPhone Safari 浏览器的多数约定，包括双击缩放，几乎现在所有的移动端浏览器都有这个功能。之前人们刚刚接触移动端的页面，在欣喜的时候往往不会care这个300ms的延时问题，可是如今touch端界面如雨后春笋，用户对体验的要求也更高，这300ms带来的卡顿慢慢变得让人难以接受。
+
+也就是说，移动端浏览器会有一些默认的行为，比如双击缩放、双击滚动。这些行为，尤其是双击缩放，主要是为桌面网站在移动端的浏览体验设计的。而在用户对页面进行操作的时候，移动端浏览器会优先判断用户是否要触发默认的行为。
+
+**重点：由于移动端会有双击缩放的这个操作，因此浏览器在click之后要等待300ms，看用户有没有下一次点击，也就是这次操作是不是双击。**
+
+### 解决方法
+
+#### 禁止缩放
+
+```html
+<meta name="viewport" content="user-scalable=no">
+<meta name="viewport" content="initial-scale=1,maximum-scale=1">
+```
+
+表明这个页面是不可缩放的，那双击缩放的功能就没有意义了，此时浏览器可以禁用默认的双击缩放行为并且去掉300ms的点击延迟。
+
+**缺点：**就是必须通过完全禁用缩放来达到去掉点击延迟的目的，然而完全禁用缩放并不是我们的初衷，我们只是想禁掉默认的双击缩放行为，这样就不用等待300ms来判断当前操作是否是双击。但是通常情况下，我们还是希望页面能通过双指缩放来进行缩放操作，比如放大一张图片，放大一段很小的文字。
+
+#### 更改默认的视口宽度（通过响应式布局）
+
+一开始，为了让桌面站点能在移动端浏览器正常显示，移动端浏览器默认的视口宽度并不等于设备浏览器视窗宽度，而是要比设备浏览器视窗宽度大，通常是980px。我们可以通过以下标签来设置视口宽度为设备宽度。
+
+```
+<meta name="viewport" content="width=device-width">
+```
+
+因为双击缩放主要是用来改善桌面站点在移动端浏览体验的，而随着响应式设计的普及，很多站点都已经对移动端坐过适配和优化了，这个时候就不需要双击缩放了，如果能够识别出一个网站是响应式的网站，那么移动端浏览器就可以自动禁掉默认的双击缩放行为并且去掉300ms的点击延迟。如果设置了上述`meta`标签，那浏览器就可以认为该网站已经对移动端做过了适配和优化，就无需双击缩放操作了。
+
+这个方案相比方案一的好处在于，它没有完全禁用缩放，而只是禁用了浏览器默认的双击缩放行为，但用户仍然可以通过双指缩放操作来缩放页面。
+
+#### fastClick
+
+[FastClick](https://link.juejin.im/?target=https%3A%2F%2Flink.jianshu.com%3Ft%3Dhttps%3A%2F%2Fgithub.com%2Fftlabs%2Ffastclick)是 [FT Labs](https://link.juejin.im/?target=https%3A%2F%2Flink.jianshu.com%3Ft%3Dhttp%3A%2F%2Flabs.ft.com%2F)专门为解决移动端浏览器 300 毫秒点击延迟问题所开发的一个轻量级的库。FastClick的实现原理是在检测到touchend事件的时候，会通过DOM自定义事件立即出发模拟一个click事件，并把浏览器在300ms之后的click事件阻止掉。
+
+原理的实现可以看看这里：https://zhuanlan.zhihu.com/p/28052894  
+
+zepto是通过计算偏移量，fastClick是通过计算时间差，touchStart 和touchEnd的时间差
+
+### 点击穿透问题
+
+说完移动端点击300ms延迟的问题，还不得不提一下移动端点击穿透的问题。可能有人会想，既然click点击有300ms的延迟，那对于触摸屏，我们直接监听touchstart事件不就好了吗？
+使用touchstart去代替click事件有两个不好的地方。
+第一：touchstart是手指触摸屏幕就触发，有时候用户只是想滑动屏幕，却触发了touchstart事件，这不是我们想要的结果；
+第二：使用touchstart事件在某些场景下可能会出现点击穿透的现象。
+
+什么是**点击穿透**？
+假如页面上有两个元素A和B。B元素在A元素之上。我们在B元素的touchstart事件上注册了一个回调函数，该回调函数的作用是隐藏B元素。我们发现，当我们点击B元素，B元素被隐藏了，随后，A元素触发了click事件。
+
+这是因为在移动端浏览器，事件执行的顺序是touchstart > touchend > click。而click事件有300ms的延迟，当touchstart事件把B元素隐藏之后，隔了300ms，浏览器触发了click事件，但是此时B元素不见了，所以该事件被派发到了A元素身上。如果A元素是一个链接，那此时页面就会意外地跳转。
+
+#### 注：浏览器事件触发的顺序
+
+touchstart --> mouseover(有的浏览器没有实现) --> mousemove(一次) -->mousedown --> mouseup --> click -->touchend
+
+Touch 事件中，常用的为 touchstart, touchmove, touchend 三种。除此之外还有touchcancel。 注意，原生事件中并没有tap事件。下面会解释tap事件怎么产生的。
+
+![image-20190929200315852](https://tva1.sinaimg.cn/large/006y8mN6ly1g7gn3rse9kj31580u0k61.jpg)
+
+解决方案：
+
+1. 只用touch
+
+   最简单的解决方案，完美解决点击穿透问题
+
+   把页面内所有click全部换成touch事件（`touchstart`、’touchend’、’tap’），
+
+   需要特别注意
+
+   a标签，a标签的href也是click，需要去掉换成js控制的跳转，或者直接改成span + tap控制跳转。如果要求不高，不在乎滑走或者滑进来触发事件的话，span + touchend就可以了，毕竟tap需要引入第三方库
+
+   
+
+   不用a标签其实没什么，移动app开发不用考虑SEO，即便用了a标签，一般也会去掉所有默认样式，不如直接用span
+
+2. 用FastClick
 
 
 ## 关于内存泄漏
