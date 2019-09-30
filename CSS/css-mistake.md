@@ -213,7 +213,83 @@ IFC中的line box一般左右都贴紧整个IFC，但是会因为float元素而�
 
 
 
+## 水平居中
 
+1) 若是行内元素, 给其父元素设置 text-align:center,即可实现行内元素水平居中.
+
+2) 若是块级元素, 该元素设置 margin:0 auto即可.
+
+3) 若子元素包含 float:left 属性, 为了让子元素水平居中, 则可让父元素宽度设置为fit-content,并且配合margin, 作如下设置:
+
+```CSS
+.parent{
+    width: -moz-fit-content;
+    width: -webkit-fit-content;
+    width:fit-content;
+    margin:0 auto;
+}
+//设置了fit-content 父元素会包裹子元素
+```
+
+fit-content是CSS3中给width属性新加的一个属性值,它配合margin可以轻松实现水平居中, 目前只有IE不兼容。
+
+4) 使用flex 布局, 可以轻松的实现水平居中, 父元素设置如下:
+
+```css
+    .father{
+        height: 200px;
+        border: 1px solid red;
+        display: flex;
+        justify-content: center
+    }
+    .son{
+        width: 50px;
+        height: 50px;
+        background-color: #ee1e2d;
+```
+
+5) 使用CSS3中新增的transform属性,
+
+```css
+.father{
+  position:relative
+}
+.son{
+    position:absolute;
+      left:50%;
+      transform:translate(-50%,0);
+}
+```
+
+因为这里定位是按元素的（0,0）左上角来的，所以移动父元素的50%之后还得移动自身的50%
+
+6）同样使用position，还可以用margin设置负值来达到这样的效果
+
+```css
+.son{
+    position:absolute;
+    width:固定;
+    left:50%;
+    margin-left:-0.5宽度;
+}
+```
+
+这个方法和第5中基本一样，只是需要知道width，然后移动自身一般的宽度
+
+7）使用绝对定位
+
+```css
+.son{
+    position:absolute;
+    width:固定;
+    left:0;
+    right:0;
+    margin:0 auto;
+}
+```
+
+这个和直接margin：0 auto的差别就是，对于inline-block元素也有效
+第八点中，元素的定位是absolute，适用于绝对定位又要居中的场景
 
 ## 垂直居中
 
@@ -230,6 +306,14 @@ C：定位。父元素设置相对定位，子元素设置绝对定位，子元�
 D：设置伪元素。vertical-align属性定义行内元素的基线相对于该元素所在行的基线的垂直对齐。打个比方：有两个行内元素a和b，a和b都是img，如果a加了vertical-align:middle样式，b的底部（基线）就会对齐a的中间位置；如果a和b都加了一个vertical-align:middle样式。那么就互相对齐了对方的中间位置，也就是它们在垂直方向上的中线对齐了。
 
 而伪元素的display属性默认值为inline，行内元素是无法设置宽高的，想要设置宽高需要将之设置为block或者inline-block。所以D有错误，应该将：after设置为inline-block才行
+
+
+
+### positon
+
+
+
+
 
 
 
@@ -359,7 +443,7 @@ D：设置伪元素。vertical-align属性定义行内元素的基线相对于�
 		使网页能自适应的显示在不同大小终端设备上的新网页设计方式及技术，它需要开发多套界面来适应不同的终端。
 		
 		核心方法：
-	
+		
 		自适应布局通过检测视口分辨率，来判断当前访问的设备是：pc端、平板、手机，从而请求服务层，返回不同的页面；
 		同时也采用rem
 		即<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
@@ -367,4 +451,26 @@ D：设置伪元素。vertical-align属性定义行内元素的基线相对于�
 
 
 ## box-sizing
+
+
+
+
+
+
+
+
+
+## 改变滚动条样式
+
+https://juejin.im/post/5bfb6926e51d453d776b93ca
+
+https://juejin.im/post/5d6a740fe51d45621512adb3#heading-4
+
+https://blog.csdn.net/zh_rey/article/details/72473284
+
+
+
+
+
+
 
