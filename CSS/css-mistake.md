@@ -204,6 +204,38 @@ IFC中的line box一般左右都贴紧整个IFC，但是会因为float元素而�
 
 ## 伪类和伪元素的区别
 
+### 伪类
+
+官方定义：
+
+> The pseudo-class concept is introduced to permit selectionbased on information that lies outside of the documenttree or that cannot be expressed using the other simple selectors.
+其核心就是用来选择那些不能够被普通选择器选择的文档之外的元素，比如:hover。
+
+### 伪元素
+
+官方定义：
+
+> Pseudo-elements create abstractions about the document tree beyond those specified by the document language. For instance, document languages do not offer mechanisms to access the first letter or first line of an element’s content. Pseudo-elements allow authors to refer to this otherwise inaccessible information. Pseudo-elements may also provide authors a way to refer to content that does not exist in the source document.
+核心就是需要创建通常不存在于文档中的元素，比如::before。
+
+
+
+
+
+
+### 不同点
+
+* 表示方法
+
+CSS2 中伪类、伪元素都是以单冒号`:`表示，CSS2.1 后规定伪类用单冒号表示，伪元素用双冒号`::`表示，浏览器同样接受 CSS2 时代已经存在的伪元素(:before, :after, :first-line, :first-letter 等)的单冒号写法。对于 CSS2 之后所有新增的伪元素(如::selection)，应该采用双冒号的写法。但是因为兼容性问题，大部分还是用的单冒号。
+
+* 定义不同
+
+伪类即假的类，通常可以添加类来达到效果，伪元素即假元素，需要通过添加元素才能达到效果。
+
+
+
+
 
 
 
@@ -289,7 +321,7 @@ fit-content是CSS3中给width属性新加的一个属性值,它配合margin可�
 ```
 
 这个和直接margin：0 auto的差别就是，对于inline-block元素也有效
-第八点中，元素的定位是absolute，适用于绝对定位又要居中的场景
+第七点中，元素的定位是absolute，适用于绝对定位又要居中的场景
 
 ## 垂直居中
 
@@ -306,6 +338,22 @@ C：定位。父元素设置相对定位，子元素设置绝对定位，子元�
 D：设置伪元素。vertical-align属性定义行内元素的基线相对于该元素所在行的基线的垂直对齐。打个比方：有两个行内元素a和b，a和b都是img，如果a加了vertical-align:middle样式，b的底部（基线）就会对齐a的中间位置；如果a和b都加了一个vertical-align:middle样式。那么就互相对齐了对方的中间位置，也就是它们在垂直方向上的中线对齐了。
 
 而伪元素的display属性默认值为inline，行内元素是无法设置宽高的，想要设置宽高需要将之设置为block或者inline-block。所以D有错误，应该将：after设置为inline-block才行
+
+
+
+1) 若元素是单行文本, 则可设置 line-height 等于父元素高度
+
+```css
+.parent{
+	  height: 200px;
+    border: 1px solid red;
+}
+.son{
+		line-height: 200px;
+}
+```
+
+2) 
 
 
 

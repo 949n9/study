@@ -259,7 +259,7 @@ JSON.parse(JSON.stringify(object))
 如果出现上述情况的，都不可以用这个方法去拷贝。
 
 ```js
-  function clone(target, map = new map()) {
+  function clone(target, map = new WeakMap()) {
     if (typeof target === 'object'){
         let cloneTarget = Array.isArray(target)? [] : {}
         if(map.get(target)){
@@ -283,6 +283,8 @@ JSON.parse(JSON.stringify(object))
 ```
 
 解决循环引用问题，我们可以额外开辟一个存储空间，来存储当前对象和拷贝对象的对应关系，当需要拷贝当前对象时，先去存储空间中找，有没有拷贝过这个对象，如果有的话直接返回，如果没有的话继续拷贝，这样就巧妙化解的循环引用的问题。
+
+`WeakMap`只接受对象作为键名（`null`除外），不接受其他类型的值作为键名。
 
 这个存储空间，需要可以存储`key-value`形式的数据，且`key`可以是一个引用类型，我们可以选择`Map`这种数据结构：
 
