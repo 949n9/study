@@ -708,7 +708,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/in
 
 这个方案相比方案一的好处在于，它没有完全禁用缩放，而只是禁用了浏览器默认的双击缩放行为，但用户仍然可以通过双指缩放操作来缩放页面。
 
-#### fastClick
+#### FastClick
 
 [FastClick](https://link.juejin.im/?target=https%3A%2F%2Flink.jianshu.com%3Ft%3Dhttps%3A%2F%2Fgithub.com%2Fftlabs%2Ffastclick)是 [FT Labs](https://link.juejin.im/?target=https%3A%2F%2Flink.jianshu.com%3Ft%3Dhttp%3A%2F%2Flabs.ft.com%2F)专门为解决移动端浏览器 300 毫秒点击延迟问题所开发的一个轻量级的库。FastClick的实现原理是在检测到touchend事件的时候，会通过DOM自定义事件立即出发模拟一个click事件，并把浏览器在300ms之后的click事件阻止掉。
 
@@ -972,4 +972,28 @@ console.log(str.match(/s/g))
             alert("X坐标：" + x + ",Y坐标：" + y);
         }
 ```
+
+
+
+
+
+### 22、HTML5有哪些新增的特性是很感兴趣的？
+
+### 23、浏览器标准模式和怪异模式之间的区别是什么？是如何触发的？
+
+### 24、HTMLP协议是无状态协议，怎么理解？
+
+### 25、get和post请求有什么区别？
+
+### 26、IE6有哪些兼容性问题？
+
+### 27、解释下CSS sprites？
+
+### 28、使用CSS预处理器（如Less、Sass）的优缺点有哪些？
+
+### 29、CSS选择器的优先级如何？
+
+### 30、display都有那些值，他们有什么区别？
+
+### 31、响应式设计和自适应设计有什么不同？
 
