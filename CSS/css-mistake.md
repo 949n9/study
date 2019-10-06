@@ -500,13 +500,38 @@ D：设置伪元素。vertical-align属性定义行内元素的基线相对于�
 
 ## box-sizing
 
+规定盒子应该如何计算一个元素的总宽度和总高度。
+
+例子
+
+```css
+//css
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    .box{
+        width: 100px;
+        height: 100px;
+        background-color: #f0ad4e;
+        margin: 10px;
+        padding: 20px;
+        border: 1px solid red;
+        box-sizing: content-box;
+    }
+```
+
+如果是box-sizing的值是content-box，即是默认值，和我们所认知的盒子是一样的。
+
+![image-20191006130904864](https://tva1.sinaimg.cn/large/006y8mN6ly1g7oegv6ot0j305t04xjrf.jpg)
 
 
 
+但是如果当box-sizing的值为border-box时
 
+![image-20191006130827589](https://tva1.sinaimg.cn/large/006y8mN6ly1g7oeg96vsqj305q04t74v.jpg)
 
-
-
+**通过案例发现如果你将一个元素的 width 设为100px,那么这100px会包含它的 border 和 padding，内容区的实际宽度会是 width 减去 border + padding 的计算值。**
 
 ## 改变滚动条样式
 
