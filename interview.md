@@ -755,6 +755,93 @@ Touch 事件中，常用的为 touchstart, touchmove, touchend 三种。除此�
 2. 用FastClick
 
 
+
+## 解决Retina屏的1px问题
+
+### 造成边框变粗的原因
+
+其实这个原因很简单，因为css中的1px并不等于移动设备的1px，这些由于不同的手机有不同的像素密度。在window对象中有一个devicePixelRatio属性，他可以反应css中的像素与设备的像素比。
+
+> devicePixelRatio的官方的定义为：设备物理像素和设备独立像素的比例，也就是 devicePixelRatio = 物理像素 / 独立像素。
+
+对于老项目，有没有什么办法能兼容1px的尴尬问题了，个人认为伪类+transform是比较完美的方法了。
+原理是把原先元素的 border 去掉，然后利用 :before 或者 :after 重做 border ，并 transform 的 scale 缩小一半，原先的元素相对定位，新做的 border 绝对定位。
+单条border样式设置：
+
+```css
+.scale-1px{
+  position: relative;
+  border:none;
+}
+.scale-1px:after{
+  content: '';
+  position: absolute;
+  bottom: 0;
+  background: #000;
+  width: 100%;
+  height: 1px;
+  -webkit-transform: scaleY(0.5);
+  transform: scaleY(0.5);
+  -webkit-transform-origin: 0 0;
+  transform-origin: 0 0;
+}
+```
+
+四条border的设置：
+
+```css
+.scale-1px{
+  position: relative;
+  margin-bottom: 20px;
+  border:none;
+}
+.scale-1px:after{
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 1px solid #000;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 200%;
+  height: 200%;
+  -webkit-transform: scale(0.5);
+  transform: scale(0.5);
+  -webkit-transform-origin: left top;
+  transform-origin: left top;
+}
+```
+
+最好在使用前也判断一下，结合 JS 代码，判断是否 Retina 屏：
+
+```js
+if(window.devicePixelRatio && devicePixelRatio >= 2){
+  document.querySelector('ul').className = 'scale-1px';
+}
+```
+
+
+
+
+
+### viewport +rem
+
+同时通过设置对应viewport的rem基准值，这种方式就可以像以前一样轻松愉快的写1px了。
+在devicePixelRatio = 2 时，输出viewport：
+
+```html
+<meta name="viewport" content="initial-scale=0.5, maximum-scale=0.5, minimum-scale=0.5, user-scalable=no">
+```
+
+在devicePixelRatio = 3 时，输出viewport：
+
+```html
+<meta name="viewport" content="initial-scale=0.3333333333333333, maximum-scale=0.3333333333333333, minimum-scale=0.3333333333333333, user-scalable=no">
+```
+
+这种兼容方案相对比较完美，适合新的项目，老的项目修改成本过大。
+对于这种方案，可以看看[《使用Flexible实现手淘H5页面的终端适配》](https://link.jianshu.com/?t=https://github.com/amfe/article/issues/17)
+
 ## 关于内存泄漏
 
 https://juejin.im/post/5cb33660e51d456e811d2687#heading-10
