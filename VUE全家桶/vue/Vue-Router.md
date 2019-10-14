@@ -83,7 +83,7 @@ created(){
 
 > 需要比较注意的一点，当你在同个页面进行跳转，即`page/111` 跳转到`page/222`时，会取不到id值，因为Vue的机制是跳转到同一个路由时，会复用这个组件，所以生命钩子不会再执行。解决办法就是在`watch`中取动态路由的id
 
-```
+```js
         watch: {
         		//next是跳转的页面，pre是上一个页面
             $route(next, pre){
@@ -102,3 +102,11 @@ created(){
           __proto__: Object */
 ```
 
+**多段路径参数**
+
+|             模式              |         匹配路径          | $route.parmas                          |
+| :---------------------------: | ------------------- | -------------------------------------- |
+|        /user/:username        | /user/evan          | `{ username: 'evan' }`                 |
+| /user/:username/post/:post_id | /user/evan/post/123 | `{ username: 'evan', post_id: '123' }` |
+
+除了 `$route.params` 外，`$route` 对象还提供了其它有用的信息，例如，`$route.query` (如果 URL 中有查询参数)、`$route.hash` 等等。
