@@ -81,13 +81,13 @@ created(){
 }
 ```
 
-> 需要比较注意的一点，当你在同个页面进行跳转，即`page/111` 跳转到`page/222`时，会取不到id值，因为Vue的机制是跳转到同一个路由时，会复用这个组件，所以生命钩子不会再执行。解决办法就是在`watch`中取动态路由的id
+> 需要比较注意的一点，当你在同个页面进行跳转，即`page/111` 跳转到`page/222`时，会取不到id值，因为Vue的机制是跳转到同一个路由时，会复用这个组件，所以生命钩子不会再执行。解决办法就是在`watch`中取动态路由的id。或者使用导航守卫。
 
 ```js
         watch: {
         		//next是跳转的页面，pre是上一个页面
-            $route(next, pre){
-                console.log(next);
+            ’$route‘(to, from){
+                console.log(to);
             }
         }
         /* next的内容
@@ -100,6 +100,15 @@ created(){
           path: "/page/2222"
           query: {}
           __proto__: Object */
+```
+
+导航守卫：beforeRouteUpdate
+
+```js
+ beforeRouteUpdate (to, from, next) {
+    // react to route changes...
+    // don't forget to call next()
+  }
 ```
 
 **多段路径参数**
