@@ -163,3 +163,32 @@ axios.interceptors.response.use(function (response) {
   });
 ```
 
+
+
+
+
+
+
+### axios的封装
+
+1.跨域请求携带cookie
+
+```
+axios.defaults.withCredentials = true
+```
+
+> 疑问： 跨域携带cookie的安全性问题，会导致CSRF 攻击吗？
+
+2.引入了qs模块
+
+`qs`模块是用来序列化js数据的。
+
+```js
+{"uid":"cs11","pwd":"000000als","username":"cs11","password":"000000als"}//JSON.stringify    uid=cs11&pwd=000000als&username=cs11&password=000000als //qs.stringify
+```
+基本用法：
+```js
+let qs = require('qs')
+temp = qs.stringify(params)
+```
+
