@@ -1,7 +1,5 @@
 #必要规则
 
-
-
 ### 永远不要把` v-if `和` v-for `同时用在同一个元素上。
 
 - 为了过滤一个列表中的项目 (比如 `v-for="user in users" v-if="user.isActive"`)。在这种情形下，请将 `users` 替换为一个计算属性 (比如 `activeUsers`)，让其返回过滤后的列表。
@@ -19,7 +17,7 @@
     v-if="user.isActive"
     :key="user.id"
   >
-    {{ user.name }}
+     {{ user.name }}
   </li>
 </ul>
 ```
