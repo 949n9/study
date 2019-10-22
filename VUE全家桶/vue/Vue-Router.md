@@ -58,7 +58,7 @@ Router中有两种模式：
 
 
 
-# Vue-Router
+
 
 ## 动态路由的匹配
 
@@ -119,3 +119,33 @@ created(){
 | /user/:username/post/:post_id | /user/evan/post/123 | `{ username: 'evan', post_id: '123' }` |
 
 除了 `$route.params` 外，`$route` 对象还提供了其它有用的信息，例如，`$route.query` (如果 URL 中有查询参数)、`$route.hash` 等等。
+
+
+
+
+
+# router 进阶
+
+## 滚动行为
+
+使用前端路由，当切换到新路由时，想要页面滚到顶部，或者是保持原先的滚动位置，就像重新加载页面那样。 `vue-router` 能做到，而且更好，它让你可以自定义路由切换时页面如何滚动。
+
+**注意: 这个功能只在支持 history.pushState 的浏览器中可用。**
+
+当创建一个 Router 实例，你可以提供一个 `scrollBehavior` 方法：
+
+```
+scrollBehavior (to, from, savedPosition) {
+  if (savedPosition) {
+    return savedPosition
+  } else {
+    return { x: 0, y: 0 }
+  }
+}
+```
+
+`scrollBehavior` 方法接收 `to` 和 `from` 路由对象。第三个参数 `savedPosition` 当且仅当 `popstate` 导航 (通过浏览器的 前进/后退 按钮触发) 时才可用。
+
+对于所有路由导航，简单地让页面滚动到顶部。
+
+返回 `savedPosition`，在按下 后退/前进 按钮时，就会像浏览器的原生表现那样
