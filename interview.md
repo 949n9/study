@@ -1084,3 +1084,57 @@ console.log(str.match(/s/g))
 
 ### 31、响应式设计和自适应设计有什么不同？
 
+
+
+
+
+### img标签的onerror事件
+
+有时，img标签中的src图片加载失败，原来的图片位置会出现一个碎片图标，这样让人很不爽，如何变得美观些呢？
+
+可以借用img标签的**onerror**事件，img标签支持**onerror** 事件，在装载文档或图像的过程中如果发生了错误，就会触发**onerror**事件。可以使用一张提示错误的图片代替显示不了的图片。代码如下：　
+
+```HTML
+<img src="images/logo.png" onerror="javascript:this.src='images/logoError.png';">
+```
+
+```HTML
+<img src="a.jpg" onerror="imgExists(this)" alt="">
+<script>
+    function imgExists(e){
+        //默认图片
+        var imgUrl = "https://account.acgxt.com/public/images/default.png";
+        var img = new Image();
+        img.src=imgUrl;
+        //判断图片大小是否大于0 或者 图片高度与宽度都大于0
+        if(img.filesize>0||(img.width>0&&img.height>0)){
+            e.src = imgUrl;
+        }else{
+            //默认图片也不存在的时候
+        }
+    }
+</script>
+```
+
+第二个是改进
+
+因为在之前的时候,我在本地对用户头像修改发现,如果图片加载失败, 使用onerror事件去获取一个默认地址的图片虽然这是可行的，但是如果刚好onerror去获取的图片也不在，那么就会一直触发onerror事件，这个标签一直在请求一个不存在的图片。也就是会一直循环请求。
+
+如果必须使用的话,就使用js的Image对象获取这个图片的信息,判断一些属性是否正常,如果正常就使用这个图片作为默认图片,不正常则不显示
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
