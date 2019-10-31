@@ -545,5 +545,42 @@ https://blog.csdn.net/zh_rey/article/details/72473284
 
 
 
+## 浏览器input框自动输入导致样式问题
 
+![image-20191031170609403](https://tva1.sinaimg.cn/large/006y8mN6gy1g8hht94973j307l03q3yf.jpg)
+
+谷歌chrome浏览器在用户登录记住密码之后通常会改变input框的背景色 
+
+解决方法有两个： 
+
+1.禁止网页自动填入
+
+```HTML
+<!--类型为文本输入框-->
+<input type="text" AUTOCOMPLETE="off" name="username" placeholder="请输入账号" id="username"/>
+<!--其他类型输入框-->
+<input type="text" AUTOCOMPLETE="off" onfocus="this.type='password'" name="password" placeholder="请输入密码" id="password"/>
+```
+
+2.修改浏览器自动填入的样式
+
+```CSS
+input:-webkit-autofill {
+    box-shadow: 0 0 0 1000px #333333 inset;
+    -webkit-text-fill-color: #fff;
+}
+```
+
+```CSS
+input:-webkit-autofill , textarea:-webkit-autofill, select:-webkit-autofill {
+	-webkit-text-fill-color: #ededed !important;
+	-webkit-box-shadow: 0 0 0px 1000px transparent  inset !important;
+    background-color:transparent;
+    background-image: none;
+     transition: background-color 50000s ease-in-out 0s; //背景色透明  生效时长  过渡效果  启用时延迟的时间
+}
+input {
+	 background-color:transparent;
+}
+```
 
