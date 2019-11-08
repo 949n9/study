@@ -2,6 +2,8 @@
 
 ### 2D转换之移动 translate
 
+> `tanslate`对于行内元素无效，就是<span>之类的。
+
 
 
 
@@ -14,7 +16,90 @@
 
 可以看到如果我们使用了`transfrom:tranlate()`后，使用了的那个元素会改变位置，不会影响其他元素，可以相当于有个占位元素在那里。不会脱离标准文档流。
 
-### 2D转换之旋转 rotate
+
+
+#### 水平垂直居中
+
+`translate`属性可以设置百分比，设置的百分比是按自身的宽度或者高度。一般的应用：
+
+* 水平垂直居中
+
+```
+.box1{
+	position: absolute;
+	top:50%
+	left: 50%
+	width: 100px;
+	height: 100px;
+	transiform: translate(-50%,-50%)
+}
+```
+
+
+
+###  2D转换之旋转 rotate
+
+写法：
+
+```CSS
+transform: rotate(90deg)
+/* deg是度数的单位，顺时针方向 */
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### 小三角应用
+
+使用到的有`::after`伪元素和`transform: rotate(度数)`来实现，
+
+```
+    .box{
+        margin: 100px;
+        width: 100px;
+        height: 100px;
+        background-color: #e6a23c;
+        position: relative;
+    }
+    .box::after{
+        content: '';
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        width: 15px;
+        height: 15px;
+        border-left: 1px solid #eee;
+        border-bottom: 1px solid #eee;
+        transform: rotate(-44deg);
+    }
+```
+
+以后可以不使用iconfont，可以直接使用这个旋转特性，加边框。
+
+![image-20191108174722296](https://tva1.sinaimg.cn/large/006y8mN6gy1g8qrymz7w9j302201j3y9.jpg)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ### 2D转换之缩放 scale
 
@@ -79,3 +164,8 @@
 ```
 
 通过给父元素设置  `  transform-style:preserve-3d;`，`transform`就可以通过它的`translateZ()`来改变元素的层叠顺序
+
+
+
+参考链接：https://www.cnblogs.com/reaf/p/5788781.html
+
