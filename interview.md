@@ -1128,13 +1128,24 @@ console.log(str.match(/s/g))
 
 
 
+项目需求：
 
+定位锚点
 
+方法1：
 
+```HTML
+<a herf="#id"></a>
+<a name="id"></a>
+```
 
+方法2：
 
+```JS
+    document.documentElement.scrollTop=100
+```
 
-
+通过这句代码可以直接定位
 
 
 
