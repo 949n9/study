@@ -1124,7 +1124,211 @@ console.log(str.match(/s/g))
 
 
 
-
+```
+"systemResources": [
+{
+"id": 1059,
+"resourceCode": "PSC001",
+"resourceLink": "",
+"resourceName": "基础数据",
+"resourceShowName": "基础数据",
+"resourceLevel": 0,
+"resourceOrder": 1,
+"resourceIcon": "aq-nav-icon aq-icon-base",
+"resourceStatus": 0,
+"parentCode": "0",
+"systemCode": "psc-system",
+"planMark": "e891ccc4fe5e6cc6b64f36a8704be2d5",
+"createTime": "2019-11-05 15:37:56",
+"resources": [
+{
+"id": 1060,
+"resourceCode": "PSC00101",
+"resourceLink": "/supply/product",
+"resourceName": "商品数据",
+"resourceShowName": "商品数据",
+"resourceLevel": 1,
+"resourceOrder": 1,
+"resourceStatus": 0,
+"parentCode": "PSC001",
+"systemCode": "psc-system",
+"planMark": "e891ccc4fe5e6cc6b64f36a8704be2d5",
+"createTime": "2019-11-05 15:37:56",
+"system_methods": []
+},
+{
+"id": 1061,
+"resourceCode": "PSC00102",
+"resourceLink": "/supply/store",
+"resourceName": "门店数据",
+"resourceShowName": "门店数据",
+"resourceLevel": 1,
+"resourceOrder": 2,
+"resourceStatus": 0,
+"parentCode": "PSC001",
+"systemCode": "psc-system",
+"planMark": "e891ccc4fe5e6cc6b64f36a8704be2d5",
+"createTime": "2019-11-05 15:37:56",
+"system_methods": []
+},
+{
+"id": 1062,
+"resourceCode": "PSC00103",
+"resourceLink": "/supply/orderRecord",
+"resourceName": "历史订单导入",
+"resourceShowName": "历史订单导入",
+"resourceLevel": 1,
+"resourceOrder": 3,
+"resourceStatus": 0,
+"parentCode": "PSC001",
+"systemCode": "psc-system",
+"planMark": "e891ccc4fe5e6cc6b64f36a8704be2d5",
+"createTime": "2019-11-05 15:37:56",
+"system_methods": []
+},
+{
+"id": 1063,
+"resourceCode": "PSC00104",
+"resourceLink": "/supply/StoreProductSale",
+"resourceName": "固定门店销售导入",
+"resourceShowName": "固定门店销售导入",
+"resourceLevel": 1,
+"resourceOrder": 4,
+"resourceStatus": 0,
+"parentCode": "PSC001",
+"systemCode": "psc-system",
+"planMark": "e891ccc4fe5e6cc6b64f36a8704be2d5",
+"createTime": "2019-11-05 15:37:56",
+"system_methods": []
+}
+]
+},
+{
+"id": 1065,
+"resourceCode": "PSC002",
+"resourceLink": "",
+"resourceName": "DMS",
+"resourceShowName": "DMS",
+"resourceLevel": 1,
+"resourceOrder": 2,
+"resourceIcon": "aq-nav-icon aq-icon-stock",
+"resourceStatus": 0,
+"parentCode": "0",
+"systemCode": "psc-system",
+"planMark": "e891ccc4fe5e6cc6b64f36a8704be2d5",
+"createTime": "2019-11-05 15:37:56",
+"resources": [
+{
+"id": 1066,
+"resourceCode": "PSC00201",
+"resourceLink": "/supply/sale",
+"resourceName": "销售数据",
+"resourceShowName": "销售数据",
+"resourceLevel": 2,
+"resourceOrder": 1,
+"resourceStatus": 0,
+"parentCode": "PSC002",
+"systemCode": "psc-system",
+"planMark": "e891ccc4fe5e6cc6b64f36a8704be2d5",
+"createTime": "2019-11-05 15:37:56",
+"system_methods": []
+},
+{
+"id": 1067,
+"resourceCode": "PSC00202",
+"resourceLink": "/supply/purchase",
+"resourceName": "采购数据",
+"resourceShowName": "采购数据",
+"resourceLevel": 2,
+"resourceOrder": 2,
+"resourceStatus": 0,
+"parentCode": "PSC002",
+"systemCode": "psc-system",
+"planMark": "e891ccc4fe5e6cc6b64f36a8704be2d5",
+"createTime": "2019-11-05 15:37:56",
+"system_methods": []
+},
+{
+"id": 1068,
+"resourceCode": "PSC00203",
+"resourceLink": "/supply/otherStock",
+"resourceName": "其它出入库数据",
+"resourceShowName": "其它出入库数据",
+"resourceLevel": 2,
+"resourceOrder": 3,
+"resourceStatus": 0,
+"parentCode": "PSC002",
+"systemCode": "psc-system",
+"planMark": "e891ccc4fe5e6cc6b64f36a8704be2d5",
+"createTime": "2019-11-05 15:37:56",
+"system_methods": []
+},
+{
+"id": 1069,
+"resourceCode": "PSC00204",
+"resourceLink": "/supply/stock",
+"resourceName": "库存数据",
+"resourceShowName": "库存数据",
+"resourceLevel": 2,
+"resourceOrder": 4,
+"resourceStatus": 0,
+"parentCode": "PSC002",
+"systemCode": "psc-system",
+"planMark": "e891ccc4fe5e6cc6b64f36a8704be2d5",
+"createTime": "2019-11-05 15:37:56",
+"system_methods": []
+}
+]
+},
+{
+"id": 1070,
+"resourceCode": "PSC003",
+"resourceLink": "",
+"resourceName": "EDI",
+"resourceShowName": "EDI",
+"resourceLevel": 2,
+"resourceOrder": 3,
+"resourceIcon": "aq-nav-icon aq-icon-store",
+"resourceStatus": 0,
+"parentCode": "0",
+"systemCode": "psc-system",
+"planMark": "e891ccc4fe5e6cc6b64f36a8704be2d5",
+"createTime": "2019-11-05 15:37:56",
+"resources": [
+{
+"id": 1071,
+"resourceCode": "PSC00301",
+"resourceLink": "/supply/storeSale",
+"resourceName": "门店POS数据",
+"resourceShowName": "门店POS数据",
+"resourceLevel": 3,
+"resourceOrder": 1,
+"resourceStatus": 0,
+"parentCode": "PSC003",
+"systemCode": "psc-system",
+"planMark": "e891ccc4fe5e6cc6b64f36a8704be2d5",
+"createTime": "2019-11-05 15:37:56",
+"system_methods": []
+},
+{
+"id": 1072,
+"resourceCode": "PSC00302",
+"resourceLink": "/supply/storeStock",
+"resourceName": "门店库存数据",
+"resourceShowName": "门店库存数据",
+"resourceLevel": 3,
+"resourceOrder": 2,
+"resourceStatus": 0,
+"parentCode": "PSC003",
+"systemCode": "psc-system",
+"planMark": "e891ccc4fe5e6cc6b64f36a8704be2d5",
+"createTime": "2019-11-05 15:37:56",
+"system_methods": []
+}
+]
+}
+],
+```
 
 
 
