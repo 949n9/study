@@ -17,3 +17,4 @@ const store = new Vuex.Store({
 
 以上是将状态保存在 localStorage ，也可以使用` js-cookie`这个工具 将状态保存在cookie。
 
+MJ_ProdCode
