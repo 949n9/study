@@ -130,7 +130,7 @@ export default new Vuex.Store({
     count : 0
   },
   mutations: {
-    ADD_COUNT: function (state,payload) {
+    [ADD_COUNT]: function (state,payload) {
         state.count += payload
     }
   }
@@ -307,6 +307,25 @@ actions: {
   }
 }
 
+```
+
+### `mapActions` 辅助函数
+
+实际业务中的类似使用：
+
+```JS
+    methods: {
+      ...mapActions([
+        'getProductUnifiedSearchData',
+        'saveProductInfo',
+        'saveProductSeriesInfo',
+        'saveProductDateInfo',
+        'saveProductDateInfo',
+        'saveSupplierProductSeriesInfo',
+        'saveSupplierProductInfo',
+        'handleBaseDialog'
+      ]),
+      }
 ```
 
 
