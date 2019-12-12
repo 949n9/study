@@ -10,9 +10,19 @@
 
 命令：git branch
 
+### 查看所有分支
+
+命令：git checkout -a
+
 ### 切换当前分支
 
 命令：git checkout 分支名
+
+### 创建分支并且切换分支，推送远程仓库
+
+命令：git checkout -b 分支名
+
+命令：git push origin 分支名
 
 ### 合并分支
 
