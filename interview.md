@@ -1351,5 +1351,24 @@ console.log(str.match(/s/g))
 
 通过这句代码可以直接定位
 
+## 判断类型
 
+```jS
+var type = function(data) {
+      var toString = Object.prototype.toString;
+      var dataType =
+        data instanceof Element
+          ? "element" // 为了统一DOM节点类型输出
+          : toString
+              .call(data)
+              .replace(/\[object\s(.+)\]/, "$1")
+              .toLowerCase()
+      return dataType
+};
+
+作者：陈大鱼头
+链接：https://juejin.im/post/5e16b8b2e51d456f60137a50
+来源：掘金
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+```
 
